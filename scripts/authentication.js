@@ -11,7 +11,28 @@ var uiConfig = {
             // User successfully signed in.
             // Return type determines whether we continue the redirect automatically
             // or whether we leave that to developer to handle.
-            return true;
+            // return true; // commented out from demo08
+
+            //Get the user object info
+            var user = authResult.user;
+            if (authResult.additionalUserInfo.isNewUser) {
+                //Create a collection with name "users"
+                db.collection("users")
+                //Define a document for a user with userID (UID) as a document ID
+                .doc(user.uid).set({
+                    name: user.displayName,
+                    email: user.email
+                }).then(function(){
+                    console.log("New user added to Firestore");
+                    window.localStorage.assign("main.html");
+                })
+                .catch(function(error){
+                    console.log(error);
+                });
+            } else {
+                return true;
+            }
+            return false;
         },
         uiShown: function () {
             // The widget is rendered.
