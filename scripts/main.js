@@ -84,11 +84,15 @@ function displayCards(collection) {
           snap.forEach(doc => { //iterate thru each doc
               var title = doc.data().name;   // get value of the "name" key
               var details = doc.data().details;   // get value of the "details" key
+              var hikeID = doc.data().id; //gets the unique ID field
+              var hikeLength = doc.data().length; //gets the length field
               let newcard = cardTemplate.content.cloneNode(true);
 
               //update title and text and image
               newcard.querySelector('.card-title').innerHTML = title;
               newcard.querySelector('.card-text').innerHTML = details;
+              newcard.querySelector('.card-length').innerHTML = hikeLength;
+              newcard.querySelector('a').onclick = () => setHikeID(hikeID); // The doc ID in firebase
               newcard.querySelector('.card-image').src = "./images/" + collection + "_" + doc.data().code + ".jpg"; //hikes.jpg
 
               //give unique ids to all elements for future use
